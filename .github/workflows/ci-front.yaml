@@ -4,10 +4,8 @@ on:
     branches:
       - main
   pull_request:
-    branches:
-      - main
-    paths:
-      - 'frontend/**'
+    # paths:
+    #   - 'frontend/**'
 
 permissions:
   contents: read
@@ -19,6 +17,7 @@ defaults:
 
 env:
   FORCE_COLOR: 3
+  CI: true
   NODE_VERSION: 22
 
 jobs:
