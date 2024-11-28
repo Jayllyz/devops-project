@@ -42,7 +42,7 @@ jobs:
       run: uv python install ${{ env.PYTHON_VERSION }}
 
     - name: Install dependencies
-      run: uv pip install --system -r requirements/dev.txt
+      run: uv pip install -r requirements/dev.txt
 
     - name: Check formatting
       run: uv run ruff format --check
@@ -66,7 +66,7 @@ jobs:
       run: uv python install ${{ env.PYTHON_VERSION }}
 
     - name: Install dependencies
-      run: uv pip install --system -r requirements/requirements.txt
+      run: uv pip install -r requirements/requirements.txt
 
     - name: Setup database
       run: docker compose -f docker-compose.yml up -d
