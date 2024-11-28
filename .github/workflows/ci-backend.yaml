@@ -23,13 +23,17 @@ env:
   FORCE_COLOR: 1
   CI: true
   PYTHON_VERSION: 3.13
-  UV_PYTHON_PREFERENCE: only-managed
 
 jobs:
   quality-backend:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+
+    - name: Setup Python ${{ env.PYTHON_VERSION }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
 
     - name: Set up uv
       uses: astral-sh/setup-uv@v4
@@ -38,22 +42,24 @@ jobs:
         enable-cache: true
         cache-dependency-glob: "**/dev*.txt"
 
-    - name: Setup Python ${{ env.PYTHON_VERSION }}
-      run: uv python install ${{ env.PYTHON_VERSION }}
-
     - name: Install dependencies
-      run: uv pip install -r requirements/dev.txt
+      run: uv pip install --system -r requirements/dev.txt
 
     - name: Check formatting
-      run: uv run ruff format --check
+      run: ruff format --check
 
     - name: Check linting
-      run: uv run ruff check
+      run: ruff check
 
   test-backend:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+
+    - name: setup python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
 
     - name: Set up uv
       uses: astral-sh/setup-uv@v4
@@ -62,19 +68,16 @@ jobs:
         enable-cache: true
         cache-dependency-glob: "**/requirements*.txt"
 
-    - name: Setup Python ${{ env.PYTHON_VERSION }}
-      run: uv python install ${{ env.PYTHON_VERSION }}
-
     - name: Install dependencies
-      run: uv pip install -r requirements/requirements.txt
+      run: uv pip install --system -r requirements/requirements.txt
 
     - name: Setup database
       run: docker compose -f docker-compose.yml up -d
 
     - name: Setup migrations & load data
       run: |
-        uv run python ./manage.py migrate
-        uv run python ./manage.py loaddata --format json ./fixtures/dev-fixtures.json
+        python3 ./manage.py migrate
+        python3 ./manage.py loaddata --format json ./fixtures/dev-fixtures.json
 
     - name: Run tests
-      run: uv run python ./manage.py test
+      run: python3 ./manage.py test
