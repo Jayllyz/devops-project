@@ -1,4 +1,4 @@
-name: CD Frontend
+name: CD Backend
 on:
   push:
     branches:
@@ -6,11 +6,11 @@ on:
     tags:
     - 'v*'
     paths:
-    - 'frontend/**'
+    - 'backend/**'
   pull_request:
     paths:
-    - 'frontend/**'
-    - '**/cd-front.yaml'
+    - 'backend/**'
+    - '**/cd-backend.yaml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
@@ -22,7 +22,7 @@ permissions:
 
 defaults:
   run:
-    working-directory: ./frontend
+    working-directory: ./backend
 
 env:
   FORCE_COLOR: 1
@@ -60,7 +60,7 @@ jobs:
       id: docker_meta
       uses: docker/metadata-action@v5
       with:
-        images: ghcr.io/${{ github.repository }}/frontend
+        images: ghcr.io/${{ github.repository }}/backend
         flavor: latest=auto
         tags: |
           type=raw,value=latest,enable={{is_default_branch}},priority=300
@@ -74,9 +74,8 @@ jobs:
       uses: docker/build-push-action@v6
       with:
         platforms: linux/amd64
-        context: ./frontend
-        file: frontend/Dockerfile
-        target: prod
+        context: ./backend
+        file: backend/Dockerfile
         builder: ${{ steps.buildx.outputs.name }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
