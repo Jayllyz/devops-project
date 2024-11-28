@@ -30,11 +30,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Setup Python ${{ env.PYTHON_VERSION }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ env.PYTHON_VERSION }}
-
     - name: Set up uv
       uses: astral-sh/setup-uv@v4
       with:
@@ -42,24 +37,22 @@ jobs:
         enable-cache: true
         cache-dependency-glob: "**/dev*.txt"
 
+    - name: Setup Python ${{ env.PYTHON_VERSION }}
+      run: uv python install ${{ env.PYTHON_VERSION }}
+
     - name: Install dependencies
       run: uv pip install --system -r requirements/dev.txt
 
     - name: Check formatting
-      run: ruff format --check
+      run: uv run ruff format --check
 
     - name: Check linting
-      run: ruff check
+      run: uv run ruff check
 
   test-backend:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-
-    - name: setup python
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ env.PYTHON_VERSION }}
 
     - name: Set up uv
       uses: astral-sh/setup-uv@v4
@@ -67,6 +60,9 @@ jobs:
         version: "latest"
         enable-cache: true
         cache-dependency-glob: "**/requirements*.txt"
+
+    - name: Setup Python ${{ env.PYTHON_VERSION }}
+      run: uv python install ${{ env.PYTHON_VERSION }}
 
     - name: Install dependencies
       run: uv pip install --system -r requirements/requirements.txt
@@ -76,8 +72,8 @@ jobs:
 
     - name: Setup migrations & load data
       run: |
-        python3 ./manage.py migrate
-        python3 ./manage.py loaddata --format json ./fixtures/dev-fixtures.json
+        uv run python ./manage.py migrate
+        uv run python ./manage.py loaddata --format json ./fixtures/dev-fixtures.json
 
     - name: Run tests
-      run: python3 ./manage.py test
+      run: uv run python ./manage.py test
