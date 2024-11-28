@@ -19,12 +19,16 @@ permissions:
   contents: read
   packages: write
 
+defaults:
+  run:
+    working-directory: ./frontend
+
 env:
   FORCE_COLOR: 1
   CI: true
 
 jobs:
-  cd-frontend:
+  build-image:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
@@ -69,7 +73,7 @@ jobs:
       uses: docker/build-push-action@v6
       with:
         platforms: linux/amd64
-        context: .
+        context: ./frontend
         file: frontend/Dockerfile
         target: prod
         builder: ${{ steps.buildx.outputs.name }}
