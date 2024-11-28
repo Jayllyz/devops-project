@@ -6,6 +6,7 @@ on:
   pull_request:
     paths:
     - 'frontend/**'
+    - '**/ci-front.yaml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
