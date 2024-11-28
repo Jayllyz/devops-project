@@ -84,8 +84,3 @@ jobs:
         labels: ${{ steps.docker_meta.outputs.labels }}
         provenance: true
         sbom: true
-
-    - name: 💬 Set output
-      id: image-tag
-      run: |
-        echo "image-tag=${{ steps.docker_meta.outputs.version }}" >> $GITHUB_OUTPUT
