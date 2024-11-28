@@ -1,72 +1,73 @@
 name: CI backend
-on: 
-    push:
-        branches:
-        - main
-    pull_request:
-        paths:
-        - 'backend/**'
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    paths:
+    - 'backend/**'
 
 permissions:
   contents: read
   pull-requests: read
-  
+
 defaults:
   run:
     working-directory: ./backend
 
 env:
-    FORCE_COLOR: 3
-    CI: true
+  FORCE_COLOR: 3
+  CI: true
+  PYTHON_VERSION: 3.13
 
 jobs:
   quality-backend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Set up uv
-        run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
+    - name: Set up uv
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
 
-      - name: setup python
-        uses: actions/setup-python@v5
-        with:
-            python-version: '3.13'
+    - name: Setup Python ${{ env.PYTHON_VERSION }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install dependencies
-        run: uv pip install --system -r requirements/dev.txt
+    - name: Install dependencies
+      run: uv pip install --system -r requirements/dev.txt
 
-      - name: Check formatting
-        run: ruff format --check
+    - name: Check formatting
+      run: ruff format --check
 
-      - name: Check linting
-        run: ruff check
+    - name: Check linting
+      run: ruff check
 
   test-backend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Set up uv
-        run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
+    - name: Set up uv
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
 
-      - name: setup python
-        uses: actions/setup-python@v5
-        with:
-            python-version: '3.13'
+    - name: setup python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install dependencies
-        run: uv pip install --system -r requirements/requirements.txt
+    - name: Install dependencies
+      run: uv pip install --system -r requirements/requirements.txt
 
-      - name: Setup database
-        run: docker compose -f docker-compose.yml up -d
+    - name: Setup database
+      run: docker compose -f docker-compose.yml up -d
 
-      - name: Setup migrations & load data
-        run: |
-          python3 ./manage.py migrate
-          python3 ./manage.py loaddata --format json ./fixtures/dev-fixtures.json
-      
-      - name: Run tests
-        run: python3 ./manage.py test
+    - name: Setup migrations & load data
+      run: |
+        python3 ./manage.py migrate
+        python3 ./manage.py loaddata --format json ./fixtures/dev-fixtures.json
+
+    - name: Run tests
+      run: python3 ./manage.py test
