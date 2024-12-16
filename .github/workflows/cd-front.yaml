@@ -16,12 +16,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: ${{ github.ref_name != 'main' }}
 
-permissions:
-  contents: read
-  packages: write
-
 defaults:
   run:
+    shell: bash
     working-directory: ./frontend
 
 env:
@@ -32,6 +29,9 @@ jobs:
   build-image:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: read
+      packages: write
     outputs:
       image-tag: ${{ steps.image-tag.outputs.image-tag }}
 
@@ -39,6 +39,8 @@ jobs:
     - name: 📦 Checkout Repository
       id: checkout
       uses: actions/checkout@v4
+      with:
+        persist-credentials: false
 
     - name: 🛠️ Set up QEMU
       id: qemu
