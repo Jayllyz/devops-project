@@ -68,7 +68,7 @@ jobs:
       run: npm install
 
     - name: Run unit tests
-      run: node --run test:unit
+      run: node --run test:cov
 
     - name: Run build
       run: node --run build
