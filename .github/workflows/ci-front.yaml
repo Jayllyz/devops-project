@@ -12,10 +12,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: ${{ github.ref_name != 'main' }}
 
-permissions:
-  contents: read
-  pull-requests: read
-
 defaults:
   run:
     shell: bash
@@ -29,6 +25,8 @@ env:
 jobs:
   quality-front:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
     - uses: actions/checkout@v4
       with:
@@ -52,6 +50,9 @@ jobs:
 
   test-front:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
     - uses: actions/checkout@v4
       with:
@@ -69,6 +70,13 @@ jobs:
 
     - name: Run unit tests
       run: node --run test:cov
+
+    - name: Coverage report
+      if: always()
+      uses: davelosert/vitest-coverage-report-action@v2
+      with:
+        working-directory: ./frontend
+        name: Frontend Coverage Report
 
     - name: Run build
       run: node --run build
