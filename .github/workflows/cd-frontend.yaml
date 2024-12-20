@@ -117,6 +117,7 @@ jobs:
         NAMESPACE: groupe4-al1
       run: |
         kubectl get namespace $NAMESPACE || kubectl create namespace $NAMESPACE
+        ls -ls
         kubectl apply -f ./k8s/frontend/deployment.yaml
         kubectl apply -f ./k8s/frontend/gateway.yaml
         kubectl apply -f ./k8s/frontend/service.yaml
