@@ -23,4 +23,4 @@ spec:
         image: ghcr.io/jayllyz/devops-project/frontend:latest
         imagePullPolicy: Always
         ports:
-        - containerPort: 3000
+        - containerPort: 80
