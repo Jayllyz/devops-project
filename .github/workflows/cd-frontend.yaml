@@ -8,6 +8,7 @@ on:
     paths:
     - 'frontend/**'
     - 'k8s/frontend/**'
+    - '**/cd-front.yaml'
   pull_request:
     paths:
     - 'frontend/**'
