@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: groupe4-al1
+  name: frontend
+  labels:
+    app: frontend
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: ghcr.io/jayllyz/devops-project/frontend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000

@@ -87,3 +87,33 @@ jobs:
         labels: ${{ steps.docker_meta.outputs.labels }}
         provenance: true
         sbom: true
+
+  deploy:
+    needs: build-image
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+
+    - name: Install kubectl
+      uses: azure/setup-kubectl@v4
+
+    - name: Configure kubectl
+      run: |
+        mkdir -p ~/.kube
+        echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+        chmod 600 ~/.kube/config
+
+    - name: Deploy Frontend
+      run: |
+        kubectl create namespace groupe4-al1
+        kubectl apply -f k8s/deployment.yaml
+        kubectl apply -f k8s/gateway.yaml
+        kubectl apply -f k8s/service.yaml
+        kubectl rollout restart deployment frontend
