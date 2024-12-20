@@ -113,8 +113,10 @@ jobs:
         chmod 600 ~/.kube/config
 
     - name: Deploy Frontend
+      env:
+        NAMESPACE: groupe4-al1
       run: |
-        kubectl create namespace groupe4-al1
+        kubectl get namespace $NAMESPACE || kubectl create namespace $NAMESPACE
         kubectl apply -f k8s/frontend/deployment.yaml
         kubectl apply -f k8s/frontend/gateway.yaml
         kubectl apply -f k8s/frontend/service.yaml
