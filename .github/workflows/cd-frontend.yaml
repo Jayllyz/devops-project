@@ -12,7 +12,7 @@ on:
   pull_request:
     paths:
     - 'frontend/**'
-    - '**/cd-front.yaml'
+    - '**/cd-frontend.yaml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
@@ -115,7 +115,7 @@ jobs:
     - name: Deploy Frontend
       run: |
         kubectl create namespace groupe4-al1
-        kubectl apply -f k8s/deployment.yaml
-        kubectl apply -f k8s/gateway.yaml
-        kubectl apply -f k8s/service.yaml
+        kubectl apply -f k8s/frontend/deployment.yaml
+        kubectl apply -f k8s/frontend/gateway.yaml
+        kubectl apply -f k8s/frontend/service.yaml
         kubectl rollout restart deployment frontend
