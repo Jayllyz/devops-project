@@ -8,7 +8,7 @@ spec:
   - name: http-gateway
     namespace: nginx-gateway
   hostnames:
-  - devops.jayllyz.fr
+  - frontend-gr4.jbienvenu.fr
   rules:
   - matches:
     - path:
