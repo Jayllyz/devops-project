@@ -119,4 +119,4 @@ jobs:
         kubectl apply -f ./k8s/frontend/deployment.yaml
         kubectl apply -f ./k8s/frontend/gateway.yaml
         kubectl apply -f ./k8s/frontend/service.yaml
-        kubectl rollout restart deployment frontend
+        kubectl rollout restart deployment frontend -n $NAMESPACE
