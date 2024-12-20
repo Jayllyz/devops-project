@@ -112,6 +112,7 @@ jobs:
 
     - name: Deploy Frontend
       run: |
+        kubectl create namespace groupe4-al1
         kubectl apply -f k8s/deployment.yaml
         kubectl apply -f k8s/gateway.yaml
         kubectl apply -f k8s/service.yaml

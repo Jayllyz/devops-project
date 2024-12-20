@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: groupe4
+  namespace: groupe4-al1
   name: frontend
   labels:
     app: frontend
