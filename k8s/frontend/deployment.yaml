@@ -24,3 +24,6 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 80
+        env:
+        - name: VITE_BACKEND_API
+          value: "http://backend:8000"
