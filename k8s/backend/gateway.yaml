@@ -1,0 +1,19 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  namespace: groupe4-al1
+  name: backend-route
+spec:
+  parentRefs:
+  - name: http-gateway
+    namespace: nginx-gateway
+  hostnames:
+  - backend-gr4.jbienvenu.fr
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: backend-service
+      port: 80
