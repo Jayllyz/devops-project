@@ -27,7 +27,7 @@ env:
   PYTHON_VERSION: 3.13
 
 jobs:
-  quality-backend:
+  quality:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -55,7 +55,7 @@ jobs:
     - name: Check linting
       run: ruff check
 
-  test-backend:
+  test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4

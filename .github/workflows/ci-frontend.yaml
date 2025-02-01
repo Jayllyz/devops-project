@@ -23,7 +23,7 @@ env:
   NODE_VERSION: 22
 
 jobs:
-  quality-front:
+  quality:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -48,7 +48,7 @@ jobs:
     - name: Check linting
       run: node --run lint
 
-  test-front:
+  test:
     runs-on: ubuntu-latest
     permissions:
       contents: read
