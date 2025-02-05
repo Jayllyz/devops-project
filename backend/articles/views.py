@@ -29,3 +29,13 @@ def articles_view(request):
             return Response(data=None, status=status.HTTP_201_CREATED)
         else:
             return Response(data.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["GET"])
+def health_check(request):
+    """
+    A simple health check endpoint that returns 200 OK.
+    This endpoint can be expanded to check database connectivity,
+    cache services, or other critical components.
+    """
+    return Response({"status": "healthy"}, status=200)

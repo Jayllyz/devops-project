@@ -18,7 +18,9 @@ Including another URLconf
 from django.urls import path
 
 from articles.views import articles_view
+from articles.views import health_check
 
 urlpatterns = [
     path("articles", articles_view, name="articles"),
+    path("health", health_check, name="health"),
 ]
