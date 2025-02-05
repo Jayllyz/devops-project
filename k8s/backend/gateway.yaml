@@ -16,4 +16,4 @@ spec:
         value: /
     backendRefs:
     - name: backend-service
-      port: 80
+      port: 8000
