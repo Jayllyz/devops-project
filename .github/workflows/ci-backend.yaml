@@ -82,7 +82,7 @@ jobs:
 
     - name: Setup migrations & load data
       run: |
-        python3 ./manage.py migrate
+        python3 ./manage.py migrate --fake-initial
         python3 ./manage.py loaddata --format json ./fixtures/dev-fixtures.json
 
     - name: Run tests
