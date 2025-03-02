@@ -29,11 +29,20 @@ spec:
         - name: DB_PORT
           value: "5432"
         - name: DB_NAME
-          value: "articles_db"
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: database
         - name: DB_USER
-          value: "articles_user"
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: username
         - name: DB_PASSWORD
-          value: "articles_password"
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: password
 ---
 apiVersion: apps/v1
 kind: Deployment
